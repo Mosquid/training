@@ -9,7 +9,7 @@
 		#app {
 			width: 100%;
 			max-width: 500px;
-			height: 100vh;
+			height: 90vh;
 			margin: 0 auto;
 			display: flex;
 		}
@@ -24,6 +24,7 @@
 			height: 50px;
 			border: 1px solid #eaeaea;
 		}
+		.data-cell.blank {border-color: transparent;}
 		.data-cell.v {
 			background-color: #ccff99;
 		}
@@ -40,27 +41,28 @@
 	<script>
 		const data = {
 			pushups: {
-				current: 0,
 				max: 3,
 			},
 			pullups: {
-				current: 0,
 				max: 3,
 			},
 			squats: {
-				current: 0,
 				max: 3
 			},
 			calves: {
-				current: 0,
 				max: 3
-			} 
+			},
+			abs: {
+				max: 2
+			}
 		}
 
 		function action(type) {
 			if (!data.hasOwnProperty(type)) return
-
+			
+			data[type].current = data[type].current || 0 
 			data[type].current = Math.min(data[type].current+1, data[type].max)
+			
 			render()
 		}
 
@@ -73,13 +75,16 @@
 			return el
 		}
 
-		function dataRow(type) {
+		function dataRow(type, max) {
 			const row = document.createElement('div')
 			row.className = 'data-row'
 			
-			while (row.children.length < 4) {
+			while (row.children.length < max+1) {
 				const cell = document.createElement('div')
 				cell.className = 'data-cell'
+
+				if (data[type].max < max && row.children.length > data[type].max)
+					cell.classList.add('blank')
 				
 				if (row.children.length && row.children.length <= data[type].current)
 					cell.classList.add('v')
@@ -94,10 +99,12 @@
 
 		function render() {
 			const container = document.querySelector('#app')
+			const max = Object.values(data).reduce((acc, cur) => Math.max(acc, cur.max), 0)
+
 			container.innerHTML = ''
 			
 			Object.keys(data).map(type => {
-				const row = dataRow(type)
+				const row = dataRow(type, max)
 				container.appendChild(row)
 			})
 		}
