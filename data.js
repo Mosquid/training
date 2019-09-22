@@ -1,15 +1,15 @@
 const data = {
 	pushups: {
-		max: 3,
+		max: 2,
 	},
 	pullups: {
 		max: 3,
 	},
 	squats: {
-		max: 3
+		max: 2
 	},
 	calves: {
-		max: 3
+		max: 2
 	},
 	abs: {
 		max: 2

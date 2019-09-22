@@ -58,7 +58,7 @@ function renderClockHTML(container) {
 
 	timer.textContent = `Time: ${mins}:${padSec}`
 
-	requestAnimationFrame(renderClockHTML.bind(null, container))
+	requestAnimationFrame(container => renderClockHTML(container))
 }
 
 function dataRow(type, max) {
